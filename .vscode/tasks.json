@@ -8,6 +8,24 @@
 				"$rustc"
 			],
 			"label": "Rust: cargo run - FileReader"
+		},
+		{
+			"type": "cargo",
+			"subcommand": "build",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "build",
+			"label": "Rust: cargo build - FileReader"
+		},
+		{
+			"type": "cargo",
+			"subcommand": "run Dummy-ImputFile.txt",
+			"args": "",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"label": "Rust: cargo run Dummy-ImputFile.txt- FileReader"
 		}
 	]
 }
