@@ -48,24 +48,33 @@ pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
     results
 }
 
+pub fn extension_identifier(file_name: &str) -> Option<&str>{
+    
+    let mut results = Vec::new();
+
+    
+    
+    if !(file_name.contains(".")){
+        results.push("no extension");
+    }else{
+        results = file_name.split('.').collect();
+    }
+    
+
+    results.pop()
+}
+
 #[cfg(test)]
 mod test {
     use super::*;
 
     #[test]
     fn one_result() {
-        let query = "duct";
-        // Rustは
-        // 安全で速く生産性も高い。
-        // 3つ選んで。
-        let contents = "\
-Rust:
-safe, fast, productive.
-Pick three.";
-
-        assert_eq!(
-            vec!["safe, fast, productive."],
-            search(query, contents)
-        );
+        let file = "dir1/dir1/FileName.ext";
+      
+        match extension_identifier(file){
+            Some(x) => assert_eq!(x, "ext"),
+            None => println!("不正なファイル名"),
+        }
     }
 }
