@@ -26,6 +26,15 @@
 				"$rustc"
 			],
 			"label": "Rust: cargo run Dummy-ImputFile.txt- FileReader"
+		},
+		{
+			"type": "cargo",
+			"subcommand": "test",
+			"problemMatcher": [
+				"$rustc"
+			],
+			"group": "test",
+			"label": "Rust: cargo test - file_reader"
 		}
 	]
 }

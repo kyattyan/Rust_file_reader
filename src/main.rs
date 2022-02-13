@@ -16,9 +16,9 @@ fn main() {
     });
 
     // {}を探しています
-    println!("Searching for {}", config.query);
+    //println!("Searching for {}", config.query);
     // {}というファイルの中
-    println!("In file {}", config.filename);
+    //println!("In file {}", config.filename);
 
     if let Err(e) = file_reader::run(config) {
         println!("Application error: {}", e);
