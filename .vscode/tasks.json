@@ -20,8 +20,7 @@
 		},
 		{
 			"type": "cargo",
-			"subcommand": "run Dummy-ImputFile.txt",
-			"args": "",
+			"subcommand": "run {input:filename}",
 			"problemMatcher": [
 				"$rustc"
 			],
@@ -35,6 +34,14 @@
 			],
 			"group": "test",
 			"label": "Rust: cargo test - file_reader"
+		}
+	],
+	"inputs": [
+		{
+			"id": "filename",
+			"description": "",
+			"default": "Dummy-ImputFile.txt",
+			"type": "promptString"
 		}
 	]
 }
