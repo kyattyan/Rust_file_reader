@@ -2,6 +2,8 @@ use std::error;
 use std::fs::File;
 use std::collections::VecDeque;
 use std::io::{prelude::*};
+use plotters::prelude::*;
+
 
 //To do:　簡単なプロット作成
 
@@ -63,15 +65,16 @@ pub fn run(config: Config) -> Result<(), Box<dyn error::Error>>{
         }*/
     }
 
-    {
+    /*{
         let mut i:i32 = 1;
     
         for opt_energy in scf{
             println!("{}: {:.9}",i, opt_energy);
             i+=1;
         }
-    }
+    }*/
 
+    draww_scf_changes(scf);
 
     // テキストは\n{}です
     //println!("With text:\n{}", contents);
@@ -124,8 +127,61 @@ pub fn extension_identifier(file_name: &str) -> Option<&str>{
     results.pop()
 }
 
-pub fn write_summary_to_file(){
+pub fn draww_scf_changes(scf_ener: Vec::<f64>)-> Result<(), Box<dyn error::Error>>{
+   // 描画先をBackendとして指定。ここでは画像に出力するためBitMapBackend
+    let root = BitMapBackend::new("chart.png", (640, 480)).into_drawing_area();
+    root.fill(&WHITE).unwrap();
 
+    let mut scf_cycle_num: i32;
+    let mut scf_max_ener: f64 = scf_ener[0];
+    let mut scf_min_ener: f64 = scf_ener[0];
+
+    scf_cycle_num = scf_ener.len() as i32;
+
+    
+    for opt_ener in scf_ener.clone() {
+        if scf_max_ener < opt_ener{
+            scf_max_ener = opt_ener;
+        }
+
+        if scf_min_ener > opt_ener{
+            scf_min_ener = opt_ener;
+        }
+    }
+
+    
+    // グラフの軸の設定など
+
+
+    let mut chart = ChartBuilder::on(&root)
+        .caption("y=x^2", ("sans-serif", 50).into_font())
+        .margin(10)
+        .x_label_area_size(30)
+        .y_label_area_size(60)
+        .build_cartesian_2d(0i32..scf_cycle_num as i32, scf_min_ener as f64..scf_max_ener as f64).unwrap();
+
+    chart.configure_mesh().draw().unwrap();
+
+    // データの描画。(x, y)のイテレータとしてデータ点を渡す
+    chart.draw_series(PointSeries::of_element(
+        (0..scf_cycle_num).map(|x| ((x+1) , scf_ener[x as usize])),
+        5,
+        &RED,
+        &|c, s, st| {
+            return EmptyElement::at(c)    // We want to construct a composed element on-the-fly
+            + Circle::new((0,0),s,st.filled()) // At this point, the new pixel coordinate is established
+        },
+    )).unwrap();
+
+    chart.draw_series(LineSeries::new(
+        (0..scf_cycle_num).map(|x| ((x+1) , scf_ener[x as usize])),
+        &RED,
+    )).unwrap();
+
+
+
+
+    Ok(())
 }
 
 #[cfg(test)]
