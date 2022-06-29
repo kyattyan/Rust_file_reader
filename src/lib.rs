@@ -12,10 +12,6 @@ pub struct Config {
     pub filename: String,
 }
 
-pub enum Software{
-    G09,
-    G16,
-}
 
 impl Config {
     
@@ -82,22 +78,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn error::Error>>{
     Ok(())
 }
 
-/*出力ファイルの最初の数行から、出力してきたソフトウェアを識別する
-識別できなかった場合はエラーを返すのでパニックする。
-パニックするときにファイル名を受け取り側で明記する。
-ひとまずはハードコーディング */
-pub fn identify_calculation_software(contents: &str) -> Result<Software, &'static str>{
-    let contents_lines = contents.lines();
-    for line in contents_lines{
-        if line.contains("G09"){
-            return Ok(Software::G09);
-        }
-        if line.contains("G16"){
-            return Ok(Software::G16);
-        }
-    }
-    Err("cannot identify software which output this file")
-}
+
 
 pub fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
 

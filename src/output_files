@@ -1,0 +1,34 @@
+use std::error;
+use std::fs::File;
+use std::collections::VecDeque;
+use std::io::{prelude::*};
+
+
+pub enum Software{
+    G09,
+    G16,
+}
+
+/*出力ファイルの最初の数行から、出力してきたソフトウェアを識別する
+識別できなかった場合はエラーを返すのでパニックする。
+パニックするときにファイル名を受け取り側で明記する。
+ひとまずはハードコーディング */
+/*pub fn identify_calculation_software(contents: &str) -> Result<Software, &'static str>{
+    let contents_lines = contents.lines();
+    for line in contents_lines{
+        if line.contains("G09"){
+            return Ok(Software::G09);
+        }
+        if line.contains("G16"){
+            return Ok(Software::G16);
+        }
+    }
+    Err("cannot identify software which output this file")
+}*/
+
+#[derive(Debug)]
+pub struct OutputFile{
+    FileName: String,
+    CalcdSoftware: Software,
+
+}
